@@ -8,7 +8,7 @@ script:
   - IMAGE_NAME=quay.io/theassassin/fgallery
   - IMAGE_TAG=latest
   - IMAGE="$IMAGE_NAME":"$IMAGE_TAG"
-  - docker pull "$IMAGE"
+  - docker pull "$IMAGE" || true
   - docker build --cache-from "$IMAGE" -t "$IMAGE" .
 
 after_success:
