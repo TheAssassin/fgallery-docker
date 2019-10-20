@@ -1,0 +1,4 @@
+*.jpg*
+*.JPG*
+docker-compose.yml
+*.swp*

@@ -1,0 +1,12 @@
+version: '2'
+
+services:
+  gallery:
+    build: .
+    restart: unless-stopped
+    ports:
+      - 127.0.0.1:1080:80
+    environment:
+      # - GALLERY_TITLE="My Gallery"
+    volumes:
+      - <your images directory>:/images:ro
