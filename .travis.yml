@@ -1,0 +1,11 @@
+language: generic
+
+services: docker
+
+script:
+  - set -e
+  - set -o pipefail
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin quay.io
+  - IMAGE_NAME=theassassin/fgallery
+  - docker build -t "$IMAGE_NAME":latest
+  - docker push "$IMAGE_NAME":latest
