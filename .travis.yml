@@ -5,9 +5,12 @@ services: docker
 script:
   - set -e
   - set -o pipefail
-  - IMAGE_NAME=theassassin/fgallery
-  - docker build -t "$IMAGE_NAME":latest .
+  - IMAGE_NAME=quay.io/theassassin/fgallery
+  - IMAGE_TAG=latest
+  - IMAGE="$IMAGE_NAME":"$IMAGE_TAG"
+  - docker pull "$IMAGE"
+  - docker build --cache-from "$IMAGE" -t "$IMAGE" .
 
 after_success:
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin quay.io
-  - docker push "$IMAGE_NAME":latest
+  - docker push "$IMAGE"
