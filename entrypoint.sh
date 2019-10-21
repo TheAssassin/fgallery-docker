@@ -6,8 +6,8 @@ set -x
 # clean up old files to cleanly regenerate the gallery
 rm -rf /usr/share/nginx/html
 
-# make sure webserver directory exists
-install -d /usr/share/nginx/html
+# make sure webserver base directory exists
+install -d /usr/share/nginx/
 
 # try to generate the gallery
 if ! /fgallery/fgallery -v -j3 /images /usr/share/nginx/html/ "${GALLERY_TITLE:-Gallery}"; then
