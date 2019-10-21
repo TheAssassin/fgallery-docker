@@ -2,7 +2,12 @@ version: '2'
 
 services:
   gallery:
-    build: .
+    image: quay.io/theassassin/fgallery
+    # build:
+    #   context: .
+    #   cache_from:
+    #     # speed up build by reusing as many layers as possible from prebuilt image
+    #     - quay.io/theassassin/fgallery
     restart: unless-stopped
     ports:
       - 127.0.0.1:1080:80
