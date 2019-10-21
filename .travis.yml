@@ -5,14 +5,17 @@ services: docker
 script:
   - set -e
   - set -o pipefail
+  - latest_commit=$(curl https://gitlab.com/api/v4/projects/10594627/repository/branches | jq -r '.[] | select(.name == "master") | .commit.short_id')
   - IMAGE_NAME=quay.io/theassassin/fgallery
-  - IMAGE_TAG=$(curl https://gitlab.com/api/v4/projects/10594627/repository/branches | jq -r '.[] | select(.name == "master") | .commit.short_id')
+  - IMAGE_TAG="$latest_commit"
   - IMAGE="$IMAGE_NAME":"$IMAGE_TAG"
   - docker pull "$IMAGE" || true
-  - docker build --cache-from "$IMAGE" -t "$IMAGE" .
+  - docker build --cache-from "$IMAGE" -t "$IMAGE" --build-arg=BRANCH="$latest_commit" .
 
 after_success:
   - docker tag "$IMAGE" "$IMAGE_NAME":latest
+  - docker tag "$IMAGE" "$IMAGE_NAME":master
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin quay.io
   - docker push "$IMAGE"
   - docker push "$IMAGE_NAME":latest
+  - docker push "$IMAGE_NAME":master
